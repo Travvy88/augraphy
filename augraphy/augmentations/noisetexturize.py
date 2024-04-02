@@ -94,9 +94,14 @@ class NoiseTexturize(Augmentation):
                 image, image_alpha = image[:, :, :3], image[:, :, 3]
 
             sigma = random.randint(self.sigma_range[0], self.sigma_range[1])
-            turbulence = random.randint(
-                self.turbulence_range[0],
-                self.turbulence_range[1],
+
+            # turbulence must > 1 to prevent endless while loop below
+            turbulence = max(
+                2,
+                random.randint(
+                    self.turbulence_range[0],
+                    self.turbulence_range[1],
+                ),
             )
 
             result = image.astype(float)

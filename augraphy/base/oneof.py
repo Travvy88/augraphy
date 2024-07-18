@@ -18,7 +18,6 @@ class OneOf(Augmentation):
     def __init__(self, augmentations, p=1):
         """Constructor method"""
         self.augmentations = augmentations
-        self.augmentation_probabilities = self.compute_probability(self.augmentations)
         self.p = p
 
     # Randomly selects an Augmentation to apply to data.
@@ -26,6 +25,7 @@ class OneOf(Augmentation):
         if force or self.should_run():
 
             # Select one augmentation using the max value in probability values
+            self.augmentation_probabilities = self.compute_probability(self.augmentations)
             augmentation = self.augmentations[np.argmax(self.augmentation_probabilities)]
 
             # Applies the selected Augmentation.

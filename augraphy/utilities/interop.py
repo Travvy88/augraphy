@@ -22,7 +22,7 @@ class Interop(Augmentation):
         self.augmentation = augmentation
         super().__init__(p=p)
 
-    def __call__(self, image, layer=None, force=False):
+    def __call__(self, image, layer=None, mask=None, keypoints=None, bounding_boxes=None, force=False):
 
         image = image.copy()
         result = self.augmentation(image=image)

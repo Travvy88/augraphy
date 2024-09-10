@@ -187,6 +187,7 @@ class Geometric(Augmentation):
                 # remove and limit bounding boxes to the cropped boundary
                 if bounding_boxes is not None:
                     # check each point, and remove them if it is outside the cropping area
+                    remove_indices = []
                     for i, bounding_box in enumerate(bounding_boxes):
                         xspoint, yspoint, xepoint, yepoint = bounding_box
                         # start point is outside the croped area, but end point is inside

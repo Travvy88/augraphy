@@ -31,7 +31,7 @@ class Geometric(Augmentation):
              xn (int) = image width  * xn (float and 0.0 - 1.0);
              yn (int) = image height * yn (float and 0.0 - 1.0)
     :type crop: tuple, optional
-    :param rotate_range: Pair of ints determining the range from which to sample
+    :param rotate_range: Pair of ints or floats determining the range from which to sample
            the image rotation.
     :type rotate_range: tuple, optional
     :param randomize: Flag to apply random geometric transformations.
@@ -118,7 +118,7 @@ class Geometric(Augmentation):
             random.randint(0, int(ysize / 5)),
         ]
         self.padding_value = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        self.padding_typee = random.choice(["fill", "mirror", "duplicate"])
+        self.padding_type = random.choice(["fill", "mirror", "duplicate"])
 
     def run_crop(self, image, mask, keypoints, bounding_boxes):
         """Crop image based on the input cropping box.
@@ -597,7 +597,7 @@ class Geometric(Augmentation):
 
         # generate random angle
         if (self.rotate_range[0] != 0) | (self.rotate_range[1] != 0):
-            angle = random.randint(self.rotate_range[0], self.rotate_range[1])
+            angle = random.uniform(self.rotate_range[0], self.rotate_range[1])
         else:
             angle = 0
         # rotate image
@@ -605,7 +605,7 @@ class Geometric(Augmentation):
             ysize, xsize = image.shape[:2]
 
             # rotate image
-            image = rotate_image_PIL(image, angle, expand=1)
+            image = rotate_image_PIL(image, angle, expand=1, background_value=self.padding_value)
 
             # rotate mask
             if mask is not None:
